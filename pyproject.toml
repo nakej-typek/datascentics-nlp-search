@@ -1,0 +1,16 @@
+[project]
+name = "czech-news-search"
+version = "0.1.0"
+description = "Full-text search over a corpus of Czech news articles — own BM25 + Czech NLP pipeline (Datasentics NLP task)"
+authors = [
+    { name = "JP", email = "wurstlagoft@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+czech-news-search = "czech_news_search:main"
+
+[build-system]
+requires = ["uv_build>=0.11.17,<0.12.0"]
+build-backend = "uv_build"

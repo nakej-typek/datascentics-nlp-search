@@ -1,0 +1,22 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# --- uv / virtualenv ---
+.venv/
+# Note: uv.lock IS committed (reproducible installs) — intentionally not ignored.
+
+# --- Data (raw dataset is re-downloadable from HuggingFace; keep out of git) ---
+data/
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+.claude/
