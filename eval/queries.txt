@@ -1,0 +1,24 @@
+# Evaluation query set -- hand-picked from the corpus `keywords` field.
+# Each line is a query; relevant docs = articles tagged with that keyword.
+# Curated to be clear *topics* (dropped source/platform tags like reuters,
+# twitter, aktuálně.cz which are noise, not search topics).
+# Lines starting with # and blank lines are ignored.
+
+fotbal
+hokej
+vláda
+policie
+očkování
+vakcína
+pandemie
+covid-19
+ukrajina
+čína
+polsko
+slovensko
+francie
+německo
+brno
+andrej babiš
+donald trump
+vladimir putin
