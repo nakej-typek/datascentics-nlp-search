@@ -132,6 +132,13 @@ vs. streaming; when an LLM re-ranker / RAG answer is worth the latency and cost.
 
 ---
 
+## A note on process
+
+This was built with **AI pair-programming** (Claude Code). The architecture, NLP
+and evaluation **decisions — and the reasoning behind them — are my own**; I used
+the assistant to move faster on scaffolding and to pressure-test ideas. Everything
+in this repo I can explain and defend.
+
 ## Repo layout
 
 ```
