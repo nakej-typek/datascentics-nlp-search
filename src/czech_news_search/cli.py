@@ -29,8 +29,11 @@ def load_corpus(path: Path = DATA) -> pd.DataFrame:
     return df
 
 
-def build_index(df: pd.DataFrame) -> BM25:
-    tokenized = {i: tokenize(text) for i, text in enumerate(df["search_text"])}
+def build_index(df: pd.DataFrame, lemmatize: bool = True) -> BM25:
+    tokenized = {
+        i: tokenize(text, lemmatize=lemmatize)
+        for i, text in enumerate(df["search_text"])
+    }
     index = InvertedIndex.build(tokenized)
     return BM25(index)
 

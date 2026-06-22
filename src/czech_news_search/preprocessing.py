@@ -10,6 +10,9 @@ understanding over piling on libraries.
 """
 
 import re
+from functools import lru_cache
+
+import simplemma
 
 # Starter Czech stopword list: very common function words that carry little
 # topical meaning, so they mostly add noise to retrieval. A fuller list (and
@@ -28,9 +31,28 @@ STOPWORDS: set[str] = {
 _TOKEN_RE = re.compile(r"\w+", re.UNICODE)
 
 
-def tokenize(text: str) -> list[str]:
-    """Lowercase, split into word tokens, drop stopwords and pure numbers."""
+@lru_cache(maxsize=100_000)
+def _lemma(word: str) -> str:
+    """Czech lemma of a single word (cached -- the same words recur a lot).
+
+    Folds inflected forms together: povodně/povodní -> povodeň, vlády -> vláda.
+    This is the biggest single-lever recall win for a heavily inflected language
+    like Czech: a query in one form now matches documents using another form.
+    """
+    return simplemma.lemmatize(word, lang="cs")
+
+
+def tokenize(text: str, lemmatize: bool = True) -> list[str]:
+    """Lowercase, split into word tokens, drop stopwords/numbers, optionally lemmatize.
+
+    ``lemmatize`` defaults to True (the production pipeline); pass False to get
+    the raw-token baseline for before/after comparison in evaluation.
+    """
     if not text:
         return []
     tokens = _TOKEN_RE.findall(text.lower())
-    return [t for t in tokens if t not in STOPWORDS and not t.isdigit()]
+    tokens = [t for t in tokens if t not in STOPWORDS and not t.isdigit()]
+    if lemmatize:
+        # Lemmatize first, then drop any stopword the lemma collapsed onto.
+        tokens = [lemma for t in tokens if (lemma := _lemma(t)) not in STOPWORDS]
+    return tokens

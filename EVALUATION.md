@@ -29,11 +29,22 @@ text recover the articles a human editor tagged with that topic?
 | **MRR** | How high is the *first* relevant hit? | user wants one good answer fast |
 | **nDCG@10** | Are relevant docs ranked *as high as possible*? | comparable across queries; rank-aware |
 
-## Baseline results (BM25, k1=1.5, b=0.75, no lemmatization)
+## Results — baseline vs. lemmatization
 
-| | P@10 | MRR | nDCG@10 |
+We formed a hypothesis ("Czech is heavily inflected, so folding word forms with
+lemmatization should improve recall") and *measured* it rather than assuming.
+Same query set, raw tokens vs. lemmatized pipeline (`scripts/evaluate.py` runs both):
+
+| Pipeline | P@10 | MRR | nDCG@10 |
 |---|---|---|---|
-| **Mean (18 queries)** | **0.594** | **0.838** | **0.620** |
+| BM25 baseline (raw tokens) | 0.594 | 0.838 | 0.620 |
+| **BM25 + lemmatization** | **0.639** | **0.880** | **0.662** |
+| **delta** | **+0.044** | **+0.042** | **+0.042** |
+
+Lemmatization helped on all three metrics (~7% relative on P@10) — the hypothesis
+held. Honest nuance: it's not a free lunch everywhere — `brno` got slightly
+*worse* (0.40 → 0.30), a reminder that lemmatization can occasionally over-fold.
+The aggregate win justifies keeping it on by default.
 
 Notable cases:
 - **Strong:** `donald trump` (P@10 0.90), `čína` (0.80), `vakcína` (0.80).
