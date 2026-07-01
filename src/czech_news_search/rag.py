@@ -13,6 +13,7 @@ architecture diagram in the README); the retrieval half stays exactly the same.
 """
 
 import argparse
+import shutil
 import subprocess
 import textwrap
 
@@ -52,17 +53,18 @@ def build_context(df, hits) -> str:
 
 def ask_claude(prompt: str) -> str:
     """Send the prompt to the Claude CLI (subscription) and return the answer."""
-    try:
-        result = subprocess.run(
-            ["claude", "-p"],
-            input=prompt,
-            text=True,
-            capture_output=True,
-            timeout=180,
-        )
-    except FileNotFoundError:
+    claude_bin = shutil.which("claude")
+    if claude_bin is None:
         return ("[!] 'claude' CLI nenalezeno v PATH -- nainstaluj/přihlas Claude Code, "
                 "nebo přepni RAG na lokální model.")
+    result = subprocess.run(
+        [claude_bin, "-p"],
+        input=prompt,
+        text=True,
+        encoding="utf-8",
+        capture_output=True,
+        timeout=180,
+    )
     if result.returncode != 0:
         return f"[!] claude CLI selhalo (exit {result.returncode}):\n{result.stderr.strip()}"
     return result.stdout.strip()
