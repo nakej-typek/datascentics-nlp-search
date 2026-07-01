@@ -15,6 +15,9 @@ architecture diagram in the README); the retrieval half stays exactly the same.
 import argparse
 import shutil
 import subprocess
+import sys
+
+sys.stdout.reconfigure(encoding="utf-8")
 import textwrap
 
 from .cli import build_index, load_corpus

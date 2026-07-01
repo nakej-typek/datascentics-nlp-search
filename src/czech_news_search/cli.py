@@ -5,9 +5,12 @@
 """
 
 import argparse
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.stdout.reconfigure(encoding="utf-8")
 
 from .bm25 import BM25
 from .index import InvertedIndex
